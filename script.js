@@ -69,6 +69,7 @@ function changeImage(index){
       avatar.style.backgroundImage = `url(${event.target.result})`;
       avatar.style.display = 'block';
       avatar.style.backgroundSize = 'cover';
+      avatar.style.height = '150px';
       avatar.textContent = '';
     };
     reader.readAsDataURL(file);
