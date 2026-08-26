@@ -13,7 +13,7 @@ const questions = [
 
 const questionsContainer = document.getElementById('questions-container');
 const cardGrid = document.getElementById('card-grid');
-
+const index=0;
 // 1. 9개 질문 입력 폼 및 결과 출력 틀 자동 생성
 questions.forEach((q, index) => {
   // 폼 입력란 생성
@@ -22,10 +22,9 @@ questions.forEach((q, index) => {
   qDiv.innerHTML = `
     <div class="photo-upload" id="photoUpload">
           <div class="photo-icon">📷</div>
-          <strong>${q}</strong>
-          <p>JPG, PNG 이미지 권장</p>
-          <label for="photoInput" class="upload-btn">사진 선택</label>
-          <input type="file" id="photoInput" accept="image/*"/>
+          <strong>${q}</strong><br>
+          <label for="photoInput${index}" class="upload-btn">사진 선택</label>
+          <input type="file" id="photoInput${index}" class="photoInput" accept="image/*" onchange="changeImage(${index})">
         </div>
     </div>
     <br>
@@ -35,15 +34,46 @@ questions.forEach((q, index) => {
   // 프로필 카드 미리보기 틀 생성
   const gridItem = document.createElement('div');
   gridItem.className = 'grid-item';
+  gridItem.id = `grid-item${index}`;
   gridItem.innerHTML = `
-    <img id="preview-img-${index}" src="" alt="사진 미선택" style="display:none;">
-    <p class="title">${q}</p>
-    <p class="desc" id="preview-text-${index}"></p>
+    <div id="preview-img-${index}" class="preview-img" style="display:none;"></div>
+      <p class="title">${q}</p>
+      <p class="desc" id="preview-text-${index}"></p>
+    
   `;
   cardGrid.appendChild(gridItem);
+
+  index++;
 });
 
 // 2. 메인 프로필 사진 미리보기 처리
+document.getElementById('photoInput').addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      const avatar = document.getElementById('card-avatar');
+      avatar.style.backgroundImage = `url(${event.target.result})`;
+      avatar.textContent = '';
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+function changeImage(index){
+  const file = document.getElementById(`photoInput${index}`).files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      const avatar = document.getElementById('grid-item' + index);
+      avatar.style.backgroundImage = `url(${event.target.result})`;
+      avatar.style.display = 'block';
+      avatar.style.backgroundSize = 'cover';
+      avatar.textContent = '';
+    };
+    reader.readAsDataURL(file);
+  }
+}
 document.getElementById('photoInput').addEventListener('change', function(e) {
   const file = e.target.files[0];
   if (file) {
