@@ -1,0 +1,2432 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>우리 교회 프로필 만들기</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --primary: #315c4b;
+      --primary-dark: #234638;
+      --secondary: #e8efe9;
+      --cream: #f8f6ef;
+      --white: #ffffff;
+      --text: #26332d;
+      --muted: #7b8780;
+      --border: #dfe6e1;
+      --accent: #d8b36a;
+      --danger: #b85c5c;
+    }
+
+    body {
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Pretendard",
+        "Noto Sans KR",
+        "Segoe UI",
+        sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    header {
+      height: 70px;
+      background: rgba(255, 255, 255, 0.95);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6%;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      color: var(--primary);
+      font-size: 18px;
+    }
+
+    .logo-cross {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .header-sub {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 50px 24px 80px;
+    }
+
+    .intro {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .intro-badge {
+      display: inline-flex;
+      padding: 8px 14px;
+      background: var(--secondary);
+      color: var(--primary);
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .intro h1 {
+      font-size: clamp(30px, 5vw, 52px);
+      line-height: 1.2;
+      margin-bottom: 14px;
+      letter-spacing: -2px;
+    }
+
+    .intro p {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    /* =========================
+       APP
+    ========================= */
+
+    .app {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 390px;
+      gap: 30px;
+      align-items: start;
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: 0 15px 50px rgba(36, 57, 46, 0.07);
+    }
+
+    .form-panel {
+      padding: 32px;
+    }
+
+    /* =========================
+       PROGRESS
+    ========================= */
+
+    .progress-wrap {
+      margin-bottom: 35px;
+    }
+
+    .progress-top {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 7px;
+      background: #edf1ee;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      width: 16.66%;
+      height: 100%;
+      background: var(--primary);
+      border-radius: 20px;
+      transition: width 0.3s ease;
+    }
+
+    /* =========================
+       FORM
+    ========================= */
+
+    .step {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .question-number {
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 13px;
+      margin-bottom: 9px;
+    }
+
+    .question-title {
+      font-size: 26px;
+      letter-spacing: -1px;
+      margin-bottom: 8px;
+    }
+
+    .question-description {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+
+    .field {
+      margin-bottom: 22px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 9px;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: #fbfcfb;
+      border-radius: 13px;
+      padding: 14px 15px;
+      outline: none;
+      color: var(--text);
+      transition: 0.2s;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(49, 92, 75, 0.08);
+      background: white;
+    }
+
+    .field textarea {
+      min-height: 120px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    .field input::placeholder,
+    .field textarea::placeholder {
+      color: #b1b9b4;
+    }
+
+    /* =========================
+       ROLE BUTTONS
+    ========================= */
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .role-option {
+      border: 1px solid var(--border);
+      background: #fbfcfb;
+      border-radius: 13px;
+      padding: 15px;
+      text-align: left;
+      transition: 0.2s;
+    }
+
+    .role-option:hover {
+      border-color: var(--primary);
+    }
+
+    .role-option.selected {
+      background: var(--secondary);
+      border-color: var(--primary);
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    /* =========================
+       PHOTO
+    ========================= */
+
+    .photo-upload {
+      border: 2px dashed #cfd9d3;
+      border-radius: 18px;
+      padding: 35px 20px;
+      text-align: center;
+      background: #fafcfb;
+      transition: 0.2s;
+    }
+
+    .photo-upload:hover {
+      border-color: var(--primary);
+      background: #f5f9f6;
+    }
+
+    .photo-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 14px;
+      font-size: 25px;
+    }
+
+    .photo-upload p {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 8px 0 18px;
+    }
+
+    .upload-btn {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      border-radius: 10px;
+      padding: 11px 17px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    #photoInput {
+      display: none;
+    }
+
+    .uploaded-photo {
+      display: none;
+      text-align: center;
+    }
+
+    .uploaded-photo img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 5px solid white;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.12);
+      margin-bottom: 15px;
+    }
+
+    .remove-photo {
+      background: transparent;
+      border: none;
+      color: var(--danger);
+      font-size: 13px;
+      text-decoration: underline;
+    }
+
+    /* =========================
+       NAVIGATION
+    ========================= */
+
+    .navigation {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 35px;
+      padding-top: 25px;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn {
+      border: none;
+      border-radius: 12px;
+      padding: 14px 22px;
+      font-weight: 700;
+      transition: 0.2s;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-secondary {
+      background: #f1f4f2;
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      background: #e8ece9;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      margin-left: auto;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-export {
+      width: 100%;
+      background: var(--accent);
+      color: #3d301b;
+      margin-top: 15px;
+    }
+
+    .btn-export:hover {
+      filter: brightness(0.96);
+    }
+
+    /* =========================
+       PREVIEW
+    ========================= */
+
+    .preview-panel {
+      padding: 25px;
+      position: sticky;
+      top: 95px;
+    }
+
+    .preview-title {
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .preview-label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    /* =========================
+       PROFILE CARD
+    ========================= */
+
+    .profile-card {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(145deg, #f8f6ef, #eef3ee);
+      border-radius: 20px;
+      padding: 30px 24px 25px;
+      min-height: 520px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .card-decoration {
+      position: absolute;
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      background: rgba(49, 92, 75, 0.07);
+      top: -70px;
+      right: -60px;
+    }
+
+    .card-decoration2 {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: rgba(216, 179, 106, 0.12);
+      bottom: -50px;
+      left: -40px;
+    }
+
+    .card-church {
+      position: relative;
+      z-index: 2;
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: var(--primary);
+      font-weight: 800;
+      margin-bottom: 22px;
+    }
+
+    .profile-photo {
+      position: relative;
+      z-index: 2;
+      width: 125px;
+      height: 125px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #dfe7e1;
+      border: 5px solid white;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+      margin-bottom: 18px;
+    }
+
+    .default-person {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 50px;
+      color: #8fa197;
+    }
+
+    .profile-name {
+      position: relative;
+      z-index: 2;
+      font-size: 25px;
+      font-weight: 900;
+      margin-bottom: 7px;
+    }
+
+    .profile-role {
+      position: relative;
+      z-index: 2;
+      display: inline-block;
+      padding: 6px 12px;
+      background: white;
+      border-radius: 100px;
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 23px;
+    }
+
+    .profile-message {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      min-height: 75px;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #56635b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 8px;
+      margin-bottom: 20px;
+    }
+
+    .profile-divider {
+      position: relative;
+      z-index: 2;
+      width: 35px;
+      height: 2px;
+      background: var(--accent);
+      margin-bottom: 17px;
+    }
+
+    .profile-info {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      display: grid;
+      gap: 8px;
+    }
+
+    .info-row {
+      background: rgba(255,255,255,0.75);
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+    }
+
+    .info-label {
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .info-value {
+      font-weight: 700;
+      color: var(--text);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .profile-footer {
+      position: relative;
+      z-index: 2;
+      margin-top: auto;
+      padding-top: 20px;
+      color: #849088;
+      font-size: 9px;
+      letter-spacing: 0.5px;
+    }
+
+    /* =========================
+       COMPLETE
+    ========================= */
+
+    .complete {
+      display: none;
+      text-align: center;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .complete-icon {
+      width: 75px;
+      height: 75px;
+      background: var(--secondary);
+      color: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin: 0 auto 20px;
+    }
+
+    .complete h2 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .complete p {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      text-align: center;
+      color: #9aa49e;
+      font-size: 12px;
+      padding: 0 20px 35px;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 850px) {
+      header {
+        padding: 0 20px;
+      }
+
+      .header-sub {
+        display: none;
+      }
+
+      main {
+        padding: 35px 15px 60px;
+      }
+
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .preview-panel {
+        position: static;
+        order: 2;
+      }
+
+      .form-panel {
+        padding: 24px 20px;
+      }
+
+      .preview-panel {
+        padding: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .intro {
+        margin-bottom: 25px;
+      }
+
+      .intro h1 {
+        font-size: 32px;
+      }
+
+      .question-title {
+        font-size: 23px;
+      }
+
+      .role-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .navigation {
+        margin-top: 25px;
+      }
+
+      .btn {
+        padding: 13px 17px;
+      }
+
+      .profile-card {
+        min-height: 500px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================
+       HEADER
+  ========================== -->
+
+  <header>
+    <div class="logo">
+      <div class="logo-cross">✝</div>
+      <span>우리 교회 프로필</span>
+    </div>
+
+    <div class="header-sub">
+      나를 소개하는 작은 프로필
+    </div>
+  </header>
+
+
+  <!-- =========================
+       MAIN
+  ========================== -->
+
+  <main>
+
+    <section class="intro">
+      <div class="intro-badge">COMMUNITY PROFILE</div>
+
+      <h1>
+        나의 교회 프로필을<br />
+        만들어보세요
+      </h1>
+
+      <p>
+        몇 가지 질문에 답하고 사진을 업로드하면<br />
+        나만의 교회 활동 프로필이 완성됩니다.
+      </p>
+    </section>
+
+
+    <section class="app">
+
+      <!-- =========================
+           FORM PANEL
+      ========================== -->
+
+      <div class="panel form-panel">
+
+        <!-- PROGRESS -->
+
+        <div class="progress-wrap">
+
+          <div class="progress-top">
+            <span id="stepText">1 / 6</span>
+            <span id="progressPercent">17%</span>
+          </div>
+
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+
+        </div>
+
+
+        <!-- =========================
+             STEP 1
+        ========================== -->
+
+        <div class="step active" data-step="1">
+
+          <div class="question-number">QUESTION 01</div>
+
+          <h2 class="question-title">
+            이름이 어떻게 되나요?
+          </h2>
+
+          <p class="question-description">
+            프로필에 표시될 이름을 입력해주세요.
+          </p>
+
+          <div class="field">
+
+            <label for="name">
+              이름
+            </label>
+
+            <input
+              type="text"
+              id="name"
+              placeholder="예: 김민준"
+              maxlength="20"
+            />
+
+          </div>
+
+        </div>
+
+
+        <!-- =========================
+             STEP 2
+        ========================== -->
+
+        <div class="step" data-step="2">
+
+          <div class="question-number">QUESTION 02</div>
+
+          <h2 class="question-title">
+            교회에서 어떤 역할을<br />하고 있나요?
+          </h2>
+
+          <p class="question-description">
+            가장 가까운 역할을 선택해주세요.
+          </p>
+
+          <div class="role-grid">
+
+            <button class="role-option" data-role="목회자">
+              🙏 목회자
+            </button>
+
+            <button class="role-option" data-role="교사">
+              📚 교사
+            </button>
+
+            <button class="role-option" data-role="찬양팀">
+              🎵 찬양팀
+            </button>
+
+            <button class="role-option" data-role="청년부">
+              🌱 청년부
+            </button>
+
+            <button class="role-option" data-role="학생부">
+              ✨ 학생부
+            </button>
+
+            <button class="role-option" data-role="성도">
+              🤍 성도
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- =========================
+             STEP 3
+        ========================== -->
+
+        <div class="step" data-step="3">
+
+          <div class="question-number">QUESTION 03</div>
+
+          <h2 class="question-title">
+            어느 부서에서<br />섬기고 있나요?
+          </h2>
+
+          <p class="question-description">
+            현재 활동하고 있는 부서를 입력해주세요.
+          </p>
+
+          <div class="field">
+
+            <label for="department">
+              부서
+            </label>
+
+            <input
+              type="text"
+              id="department"
+              placeholder="예: 청년부, 초등부, 찬양팀"
+              maxlength="25"
+            />
+
+          </div>
+
+        </div>
+
+
+        <!-- =========================
+             STEP 4
+        ========================== -->
+
+        <div class="step" data-step="4">
+
+          <div class="question-number">QUESTION 04</div>
+
+          <h2 class="question-title">
+            좋아하는 성경 구절은<br />무엇인가요?
+          </h2>
+
+          <p class="question-description">
+            기억하고 싶은 말씀을 자유롭게 적어주세요.
+          </p>
+
+          <div class="field">
+
+            <label for="bible">
+              좋아하는 말씀
+            </label>
+
+            <textarea
+              id="bible"
+              placeholder="예: 내가 능력 주시는 자 안에서 모든 것을 할 수 있느니라. (빌립보서 4:13)"
+              maxlength="150"
+            ></textarea>
+
+          </div>
+
+        </div>
+
+
+        <!-- =========================
+             STEP 5
+        ========================== -->
+
+        <div class="step" data-step="5">
+
+          <div class="question-number">QUESTION 05</div>
+
+          <h2 class="question-title">
+            나를 표현하는<br />한마디를 적어주세요.
+          </h2>
+
+          <p class="question-description">
+            다른 교우들에게 나를 소개한다면 어떤 말을 하고 싶나요?
+          </p>
+
+          <div class="field">
+
+            <label for="message">
+              한마디
+            </label>
+
+            <textarea
+              id="message"
+              placeholder="예: 하나님 안에서 함께 성장하는 사람이 되고 싶습니다."
+              maxlength="120"
+            ></textarea>
+
+          </div>
+
+        </div>
+
+
+        <!-- =========================
+             STEP 6
+        ========================== -->
+
+        <div class="step" data-step="6">
+
+          <div class="question-number">QUESTION 06</div>
+
+          <h2 class="question-title">
+            나를 보여주는<br />사진을 올려주세요.
+          </h2>
+
+          <p class="question-description">
+            프로필 카드에 사용할 사진입니다.
+          </p>
+
+
+          <div class="photo-upload" id="photoUpload">
+
+            <div class="photo-icon">
+              📷
+            </div>
+
+            <strong>
+              프로필 사진 업로드
+            </strong>
+
+            <p>
+              JPG, PNG 이미지 권장
+            </p>
+
+            <label for="photoInput" class="upload-btn">
+              사진 선택
+            </label>
+
+            <input
+              type="file"
+              id="photoInput"
+              accept="image/*"
+            />
+
+          </div>
+
+
+          <div class="uploaded-photo" id="uploadedPhoto">
+
+            <img id="uploadedImage" src="" alt="업로드한 프로필 사진" />
+
+            <br />
+
+            <button
+              type="button"
+              class="remove-photo"
+              id="removePhoto"
+            >
+              사진 삭제
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- =========================
+             COMPLETE
+        ========================== -->
+
+        <div class="complete" id="complete">
+
+          <div class="complete-icon">
+            ✓
+          </div>
+
+          <h2>
+            프로필이 완성되었습니다!
+          </h2>
+
+          <p>
+            오른쪽의 프로필을 확인한 후<br />
+            PNG 이미지로 저장할 수 있습니다.
+          </p>
+
+        </div>
+
+
+        <!-- =========================
+             NAVIGATION
+        ========================== -->
+
+        <div class="navigation" id="navigation">
+
+          <button
+            type="button"
+            class="btn btn-secondary"
+            id="prevBtn"
+            style="visibility: hidden;"
+          >
+            ← 이전
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-primary"
+            id="nextBtn"
+          >
+            다음 →
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- =========================
+           PREVIEW
+      ========================== -->
+
+      <div class="panel preview-panel">
+
+        <div class="preview-title">
+
+          <span>프로필 미리보기</span>
+
+          <span class="preview-label">
+            LIVE PREVIEW
+          </span>
+
+        </div>
+
+
+        <!-- PROFILE CARD -->
+
+        <div
+          class="profile-card"
+          id="profileCard"
+        >
+
+          <div class="card-decoration"></div>
+          <div class="card-decoration2"></div>
+
+
+          <div class="card-church">
+            OUR CHURCH · PROFILE
+          </div>
+
+
+          <div
+            class="profile-photo default-person"
+            id="previewPhoto"
+          >
+            ♡
+          </div>
+
+
+          <div
+            class="profile-name"
+            id="previewName"
+          >
+            나의 이름
+          </div>
+
+
+          <div
+            class="profile-role"
+            id="previewRole"
+          >
+            교회 성도
+          </div>
+
+
+          <div
+            class="profile-message"
+            id="previewMessage"
+          >
+            나를 표현하는 한마디가<br />
+            이곳에 표시됩니다.
+          </div>
+
+
+          <div class="profile-divider"></div>
+
+
+          <div class="profile-info">
+
+            <div class="info-row">
+
+              <span class="info-label">
+                🏠 부서
+              </span>
+
+              <span
+                class="info-value"
+                id="previewDepartment"
+              >
+                부서를 입력해주세요
+              </span>
+
+            </div>
+
+
+            <div class="info-row">
+
+              <span class="info-label">
+                📖 말씀
+              </span>
+
+              <span
+                class="info-value"
+                id="previewBible"
+              >
+                좋아하는 말씀
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="profile-footer">
+            TOGETHER IN FAITH · TOGETHER IN LOVE
+          </div>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="btn btn-export"
+          id="exportBtn"
+        >
+          📥 프로필 이미지로 저장
+        </button>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <footer>
+    우리 교회 프로필 만들기 · Church Community Profile
+  </footer>
+
+
+  <!--
+    ============================================
+    JAVASCRIPT
+    ============================================
+  -->
+
+  <script>
+
+    /* =========================
+       DATA
+    ========================= */
+
+    let currentStep = 1;
+    const totalSteps = 6;
+
+    const profile = {
+      name: "",
+      role: "",
+      department: "",
+      bible: "",
+      message: "",
+      photo: ""
+    };
+
+
+    /* =========================
+       ELEMENTS
+    ========================= */
+
+    const steps =
+      document.querySelectorAll(".step");
+
+    const nextBtn =
+      document.getElementById("nextBtn");
+
+    const prevBtn =
+      document.getElementById("prevBtn");
+
+    const navigation =
+      document.getElementById("navigation");
+
+    const complete =
+      document.getElementById("complete");
+
+    const progressFill =
+      document.getElementById("progressFill");
+
+    const stepText =
+      document.getElementById("stepText");
+
+    const progressPercent =
+      document.getElementById("progressPercent");
+
+
+    /* =========================
+       PREVIEW ELEMENTS
+    ========================= */
+
+    const previewName =
+      document.getElementById("previewName");
+
+    const previewRole =
+      document.getElementById("previewRole");
+
+    const previewDepartment =
+      document.getElementById("previewDepartment");
+
+    const previewBible =
+      document.getElementById("previewBible");
+
+    const previewMessage =
+      document.getElementById("previewMessage");
+
+    const previewPhoto =
+      document.getElementById("previewPhoto");
+
+
+    /* =========================
+       INPUTS
+    ========================= */
+
+    const nameInput =
+      document.getElementById("name");
+
+    const departmentInput =
+      document.getElementById("department");
+
+    const bibleInput =
+      document.getElementById("bible");
+
+    const messageInput =
+      document.getElementById("message");
+
+
+    /* =========================
+       UPDATE PROFILE
+    ========================= */
+
+    function updateProfile() {
+
+      profile.name =
+        nameInput.value.trim();
+
+      profile.department =
+        departmentInput.value.trim();
+
+      profile.bible =
+        bibleInput.value.trim();
+
+      profile.message =
+        messageInput.value.trim();
+
+
+      /* 이름 */
+
+      previewName.textContent =
+        profile.name || "나의 이름";
+
+
+      /* 역할 */
+
+      previewRole.textContent =
+        profile.role || "교회 성도";
+
+
+      /* 부서 */
+
+      previewDepartment.textContent =
+        profile.department || "부서를 입력해주세요";
+
+
+      /* 말씀 */
+
+      previewBible.textContent =
+        profile.bible || "좋아하는 말씀";
+
+
+      /* 한마디 */
+
+      if (profile.message) {
+
+        previewMessage.textContent =
+          "“" + profile.message + "”";
+
+      } else {
+
+        previewMessage.innerHTML =
+          "나를 표현하는 한마디가<br>이곳에 표시됩니다.";
+
+      }
+
+    }
+
+
+    /* =========================
+       INPUT EVENT
+    ========================= */
+
+    [
+      nameInput,
+      departmentInput,
+      bibleInput,
+      messageInput
+    ].forEach(input => {
+
+      input.addEventListener(
+        "input",
+        updateProfile
+      );
+
+    });
+
+
+    /* =========================
+       ROLE SELECTION
+    ========================= */
+
+    const roleButtons =
+      document.querySelectorAll(".role-option");
+
+    roleButtons.forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          roleButtons.forEach(btn => {
+            btn.classList.remove("selected");
+          });
+
+          button.classList.add("selected");
+
+          profile.role =
+            button.dataset.role;
+
+          updateProfile();
+
+        }
+      );
+
+    });
+
+
+    /* =========================
+       VALIDATION
+    ========================= */
+
+    function validateStep() {
+
+      if (currentStep === 1) {
+
+        if (!nameInput.value.trim()) {
+
+          alert("이름을 입력해주세요.");
+
+          nameInput.focus();
+
+          return false;
+
+        }
+
+      }
+
+
+      if (currentStep === 2) {
+
+        if (!profile.role) {
+
+          alert("교회에서의 역할을 선택해주세요.");
+
+          return false;
+
+        }
+
+      }
+
+
+      if (currentStep === 3) {
+
+        if (!departmentInput.value.trim()) {
+
+          alert("활동 부서를 입력해주세요.");
+
+          departmentInput.focus();
+
+          return false;
+
+        }
+
+      }
+
+
+      if (currentStep === 4) {
+
+        if (!bibleInput.value.trim()) {
+
+          alert("좋아하는 성경 구절을 입력해주세요.");
+
+          bibleInput.focus();
+
+          return false;
+
+        }
+
+      }
+
+
+      if (currentStep === 5) {
+
+        if (!messageInput.value.trim()) {
+
+          alert("나를 표현하는 한마디를 입력해주세요.");
+
+          messageInput.focus();
+
+          return false;
+
+        }
+
+      }
+
+
+      if (currentStep === 6) {
+
+        if (!profile.photo) {
+
+          alert("프로필 사진을 업로드해주세요.");
+
+          return false;
+
+        }
+
+      }
+
+
+      return true;
+
+    }
+
+
+    /* =========================
+       SHOW STEP
+    ========================= */
+
+    function showStep(step) {
+
+      steps.forEach(item => {
+
+        item.classList.remove("active");
+
+      });
+
+
+      const target =
+        document.querySelector(
+          `.step[data-step="${step}"]`
+        );
+
+
+      if (target) {
+        target.classList.add("active");
+      }
+
+
+      const percent =
+        Math.round(
+          (step / totalSteps) * 100
+        );
+
+
+      progressFill.style.width =
+        percent + "%";
+
+      stepText.textContent =
+        `${step} / ${totalSteps}`;
+
+      progressPercent.textContent =
+        percent + "%";
+
+
+      prevBtn.style.visibility =
+        step === 1
+          ? "hidden"
+          : "visible";
+
+
+      if (step === totalSteps) {
+
+        nextBtn.textContent =
+          "프로필 완성하기 ✓";
+
+      } else {
+
+        nextBtn.textContent =
+          "다음 →";
+
+      }
+
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+
+    }
+
+
+    /* =========================
+       NEXT
+    ========================= */
+
+    nextBtn.addEventListener(
+      "click",
+      () => {
+
+        if (!validateStep()) {
+          return;
+        }
+
+
+        if (currentStep < totalSteps) {
+
+          currentStep++;
+
+          showStep(currentStep);
+
+        } else {
+
+          finishProfile();
+
+        }
+
+      }
+    );
+
+
+    /* =========================
+       PREVIOUS
+    ========================= */
+
+    prevBtn.addEventListener(
+      "click",
+      () => {
+
+        if (currentStep > 1) {
+
+          currentStep--;
+
+          showStep(currentStep);
+
+        }
+
+      }
+    );
+
+
+    /* =========================
+       FINISH
+    ========================= */
+
+    function finishProfile() {
+
+      updateProfile();
+
+
+      steps.forEach(step => {
+        step.classList.remove("active");
+      });
+
+
+      complete.style.display =
+        "block";
+
+
+      navigation.style.display =
+        "none";
+
+
+      progressFill.style.width =
+        "100%";
+
+      stepText.textContent =
+        "완료";
+
+      progressPercent.textContent =
+        "100%";
+
+    }
+
+
+    /* =========================
+       PHOTO UPLOAD
+    ========================= */
+
+    const photoInput =
+      document.getElementById("photoInput");
+
+    const photoUpload =
+      document.getElementById("photoUpload");
+
+    const uploadedPhoto =
+      document.getElementById("uploadedPhoto");
+
+    const uploadedImage =
+      document.getElementById("uploadedImage");
+
+    const removePhoto =
+      document.getElementById("removePhoto");
+
+
+    photoInput.addEventListener(
+      "change",
+      function(event) {
+
+        const file =
+          event.target.files[0];
+
+        if (!file) {
+          return;
+        }
+
+
+        if (!file.type.startsWith("image/")) {
+
+          alert("이미지 파일만 업로드할 수 있습니다.");
+
+          return;
+
+        }
+
+
+        const reader =
+          new FileReader();
+
+
+        reader.onload =
+          function(e) {
+
+            profile.photo =
+              e.target.result;
+
+            uploadedImage.src =
+              profile.photo;
+
+
+            photoUpload.style.display =
+              "none";
+
+            uploadedPhoto.style.display =
+              "block";
+
+
+            previewPhoto.classList.remove(
+              "default-person"
+            );
+
+            previewPhoto.innerHTML =
+              "";
+
+            previewPhoto.style.backgroundImage =
+              `url("${profile.photo}")`;
+
+            previewPhoto.style.backgroundSize =
+              "cover";
+
+            previewPhoto.style.backgroundPosition =
+              "center";
+
+          };
+
+
+        reader.readAsDataURL(file);
+
+      }
+    );
+
+
+    /* =========================
+       REMOVE PHOTO
+    ========================= */
+
+    removePhoto.addEventListener(
+      "click",
+      () => {
+
+        profile.photo = "";
+
+        photoInput.value = "";
+
+        uploadedPhoto.style.display =
+          "none";
+
+        photoUpload.style.display =
+          "block";
+
+
+        previewPhoto.style.backgroundImage =
+          "none";
+
+        previewPhoto.classList.add(
+          "default-person"
+        );
+
+        previewPhoto.innerHTML =
+          "♡";
+
+      }
+    );
+
+
+    /* =========================
+       EXPORT PNG
+       Canvas를 이용해 프로필 카드 저장
+    ========================= */
+
+    const exportBtn =
+      document.getElementById("exportBtn");
+
+
+    exportBtn.addEventListener(
+      "click",
+      exportProfile
+    );
+
+
+    async function exportProfile() {
+
+      if (!profile.name) {
+
+        alert("먼저 프로필을 완성해주세요.");
+
+        return;
+
+      }
+
+
+      const canvas =
+        document.createElement("canvas");
+
+      const ctx =
+        canvas.getContext("2d");
+
+
+      const width = 900;
+      const height = 1200;
+
+
+      canvas.width =
+        width;
+
+      canvas.height =
+        height;
+
+
+      /* =====================
+         BACKGROUND
+      ===================== */
+
+      const gradient =
+        ctx.createLinearGradient(
+          0,
+          0,
+          width,
+          height
+        );
+
+
+      gradient.addColorStop(
+        0,
+        "#f8f6ef"
+      );
+
+      gradient.addColorStop(
+        1,
+        "#eaf1eb"
+      );
+
+
+      ctx.fillStyle =
+        gradient;
+
+      ctx.fillRect(
+        0,
+        0,
+        width,
+        height
+      );
+
+
+      /* 장식 */
+
+      ctx.fillStyle =
+        "rgba(49,92,75,0.07)";
+
+      ctx.beginPath();
+
+      ctx.arc(
+        820,
+        70,
+        150,
+        0,
+        Math.PI * 2
+      );
+
+      ctx.fill();
+
+
+      ctx.fillStyle =
+        "rgba(216,179,106,0.12)";
+
+      ctx.beginPath();
+
+      ctx.arc(
+        70,
+        1140,
+        120,
+        0,
+        Math.PI * 2
+      );
+
+      ctx.fill();
+
+
+      /* =====================
+         CHURCH TITLE
+      ===================== */
+
+      ctx.fillStyle =
+        "#315c4b";
+
+      ctx.font =
+        "bold 22px sans-serif";
+
+      ctx.textAlign =
+        "center";
+
+      ctx.fillText(
+        "OUR CHURCH · PROFILE",
+        width / 2,
+        80
+      );
+
+
+      /* =====================
+         PHOTO
+      ===================== */
+
+      const photoX =
+        width / 2;
+
+      const photoY =
+        250;
+
+      const photoRadius =
+        125;
+
+
+      if (profile.photo) {
+
+        await drawCircularImage(
+          ctx,
+          profile.photo,
+          photoX,
+          photoY,
+          photoRadius
+        );
+
+      } else {
+
+        ctx.fillStyle =
+          "#dfe7e1";
+
+        ctx.beginPath();
+
+        ctx.arc(
+          photoX,
+          photoY,
+          photoRadius,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fill();
+
+
+        ctx.fillStyle =
+          "#8fa197";
+
+        ctx.font =
+          "70px sans-serif";
+
+        ctx.fillText(
+          "♡",
+          photoX,
+          photoY + 25
+        );
+
+      }
+
+
+      /* =====================
+         NAME
+      ===================== */
+
+      ctx.fillStyle =
+        "#26332d";
+
+      ctx.font =
+        "bold 50px sans-serif";
+
+      ctx.fillText(
+        profile.name || "나의 이름",
+        width / 2,
+        450
+      );
+
+
+      /* =====================
+         ROLE
+      ===================== */
+
+      const roleText =
+        profile.role || "교회 성도";
+
+
+      ctx.font =
+        "bold 22px sans-serif";
+
+
+      const roleWidth =
+        ctx.measureText(roleText).width + 50;
+
+
+      roundRect(
+        ctx,
+        (width - roleWidth) / 2,
+        480,
+        roleWidth,
+        55,
+        28
+      );
+
+
+      ctx.fillStyle =
+        "#315c4b";
+
+      ctx.fillText(
+        roleText,
+        width / 2,
+        517
+      );
+
+
+      /* =====================
+         MESSAGE
+      ===================== */
+
+      ctx.fillStyle =
+        "#56635b";
+
+      ctx.font =
+        "24px sans-serif";
+
+
+      const message =
+        profile.message
+          ? `“${profile.message}”`
+          : "나를 표현하는 한마디";
+
+
+      drawWrappedText(
+        ctx,
+        message,
+        width / 2,
+        620,
+        700,
+        38
+      );
+
+
+      /* =====================
+         DIVIDER
+      ===================== */
+
+      ctx.fillStyle =
+        "#d8b36a";
+
+      ctx.fillRect(
+        width / 2 - 25,
+        720,
+        50,
+        4
+      );
+
+
+      /* =====================
+         INFO
+      ===================== */
+
+      drawInfoBox(
+        ctx,
+        "🏠  부서",
+        profile.department || "부서를 입력해주세요",
+        770
+      );
+
+
+      drawInfoBox(
+        ctx,
+        "📖  말씀",
+        profile.bible || "좋아하는 말씀",
+        860
+      );
+
+
+      /* =====================
+         FOOTER
+      ===================== */
+
+      ctx.fillStyle =
+        "#849088";
+
+      ctx.font =
+        "16px sans-serif";
+
+      ctx.fillText(
+        "TOGETHER IN FAITH · TOGETHER IN LOVE",
+        width / 2,
+        1110
+      );
+
+
+      /* =====================
+         DOWNLOAD
+      ===================== */
+
+      const link =
+        document.createElement("a");
+
+
+      const safeName =
+        (profile.name || "church-profile")
+          .replace(/[\\/:*?"<>|]/g, "");
+
+
+      link.download =
+        `${safeName}_교회프로필.png`;
+
+
+      link.href =
+        canvas.toDataURL(
+          "image/png",
+          1.0
+        );
+
+
+      link.click();
+
+    }
+
+
+    /* =========================
+       DRAW CIRCULAR IMAGE
+    ========================= */
+
+    function drawCircularImage(
+      ctx,
+      src,
+      x,
+      y,
+      radius
+    ) {
+
+      return new Promise(
+        resolve => {
+
+          const image =
+            new Image();
+
+
+          image.onload =
+            function() {
+
+              ctx.save();
+
+              ctx.beginPath();
+
+              ctx.arc(
+                x,
+                y,
+                radius,
+                0,
+                Math.PI * 2
+              );
+
+              ctx.clip();
+
+
+              const ratio =
+                Math.max(
+                  (radius * 2) / image.width,
+                  (radius * 2) / image.height
+                );
+
+
+              const w =
+                image.width * ratio;
+
+              const h =
+                image.height * ratio;
+
+
+              ctx.drawImage(
+                image,
+                x - w / 2,
+                y - h / 2,
+                w,
+                h
+              );
+
+
+              ctx.restore();
+
+
+              /* 흰색 테두리 */
+
+              ctx.strokeStyle =
+                "#ffffff";
+
+              ctx.lineWidth =
+                12;
+
+              ctx.beginPath();
+
+              ctx.arc(
+                x,
+                y,
+                radius,
+                0,
+                Math.PI * 2
+              );
+
+              ctx.stroke();
+
+
+              resolve();
+
+            };
+
+
+          image.src =
+            src;
+
+        }
+      );
+
+    }
+
+
+    /* =========================
+       ROUNDED RECT
+    ========================= */
+
+    function roundRect(
+      ctx,
+      x,
+      y,
+      width,
+      height,
+      radius
+    ) {
+
+      ctx.beginPath();
+
+      ctx.roundRect(
+        x,
+        y,
+        width,
+        height,
+        radius
+      );
+
+      ctx.fillStyle =
+        "#ffffff";
+
+      ctx.fill();
+
+    }
+
+
+    /* =========================
+       INFO BOX
+    ========================= */
+
+    function drawInfoBox(
+      ctx,
+      label,
+      value,
+      y
+    ) {
+
+      const x = 100;
+      const width = 700;
+      const height = 65;
+
+
+      ctx.fillStyle =
+        "rgba(255,255,255,0.75)";
+
+
+      ctx.beginPath();
+
+      ctx.roundRect(
+        x,
+        y,
+        width,
+        height,
+        15
+      );
+
+      ctx.fill();
+
+
+      ctx.textAlign =
+        "left";
+
+
+      ctx.fillStyle =
+        "#7b8780";
+
+      ctx.font =
+        "18px sans-serif";
+
+      ctx.fillText(
+        label,
+        x + 25,
+        y + 40
+      );
+
+
+      ctx.fillStyle =
+        "#26332d";
+
+      ctx.font =
+        "bold 18px sans-serif";
+
+
+      let displayValue =
+        value;
+
+
+      if (displayValue.length > 35) {
+
+        displayValue =
+          displayValue.substring(0, 35) + "...";
+
+      }
+
+
+      ctx.textAlign =
+        "right";
+
+      ctx.fillText(
+        displayValue,
+        x + width - 25,
+        y + 40
+      );
+
+
+      ctx.textAlign =
+        "center";
+
+    }
+
+
+    /* =========================
+       WRAPPED TEXT
+    ========================= */
+
+    function drawWrappedText(
+      ctx,
+      text,
+      x,
+      y,
+      maxWidth,
+      lineHeight
+    ) {
+
+      const words =
+        text.split(" ");
+
+      let line = "";
+      let lines = [];
+
+
+      for (
+        let i = 0;
+        i < words.length;
+        i++
+      ) {
+
+        const testLine =
+          line + words[i] + " ";
+
+
+        const metrics =
+          ctx.measureText(testLine);
+
+
+        if (
+          metrics.width > maxWidth &&
+          line !== ""
+        ) {
+
+          lines.push(line);
+
+          line =
+            words[i] + " ";
+
+        } else {
+
+          line =
+            testLine;
+
+        }
+
+      }
+
+
+      lines.push(line);
+
+
+      lines.forEach(
+        (lineText, index) => {
+
+          ctx.fillText(
+            lineText.trim(),
+            x,
+            y + index * lineHeight
+          );
+
+        }
+      );
+
+    }
+
+
+    /* =========================
+       INITIALIZE
+    ========================= */
+
+    updateProfile();
+
+    showStep(1);
+
+  </script>
+
+</body>
+</html>

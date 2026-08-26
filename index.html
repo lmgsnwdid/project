@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PWSW 눈물콧물프로젝트</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="img/favicon/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="img/favicon/apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+<meta name="application-name" content="Coddy" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+
+  <div class="container">
+    <h1>파스X시선 눈물콧물 프로젝트1️⃣</h1>
+    
+    <section class="form-section">
+      <h2 clas="mgb_9">1. 정보 입력하기</h2>
+      
+      <div class="input-group">
+        <label for="profile-img-input">나를 가장 잘 나타낼 수 있는 사진을 선택해주세요</label>
+        <div class="photo-upload" id="photoUpload">
+            <div class="photo-icon">📷</div>
+            <strong>프로필 사진 업로드</strong>
+            <p>JPG, PNG 이미지 권장</p>
+            <label for="photoInput" class="upload-btn">사진 선택</label>
+            <input type="file" id="photoInput" accept="image/*"/>
+          </div>
+      </div>
+
+      <div class="input-group">
+        <label for="user-name">이름</label>
+        <input type="text" id="user-name" placeholder="이름을 입력하세요">
+      </div>
+
+      <div class="input-group">
+        <label for="user-verse">나를 표현하는 문장</label>
+        <input type="text" id="user-verse" placeholder="예: 어린아이">
+      </div>
+
+      <h3>9가지 질문을 읽고 어울리는 사진을 업로드해주세요!</h3>
+      <div id="questions-container">
+        </div>
+
+      <button id="generate-btn">프로필 카드 만들기</button>
+    </section>
+
+    <section class="preview-section">
+      <h2 clas="mgb_9">2. 내 프로필 카드</h2>
+      
+      <div id="profile-card">
+        <div class="card-header">
+          <div class="profile-avatar" id="card-avatar">사진</div>
+          <div class="profile-info">
+            <h2 id="card-name">임동현</h2>
+            <p id="card-verse">"어린아이"</p>
+          </div>
+        </div>
+
+        <div class="card-grid" id="card-grid">
+          </div>
+      </div>
+
+      <button id="export-btn">📷 이미지로 내보내기 (다운로드)</button>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
