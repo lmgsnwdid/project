@@ -91,8 +91,10 @@ document.getElementById('photoInput').addEventListener('change', function(e) {
 // 3. '프로필 카드 만들기' 버튼 클릭 시 데이터 동기화
 document.getElementById('generate-btn').addEventListener('click', () => {
   // 이름 및 성경구절 반영
-  document.getElementById('card-name').textContent = document.getElementById('user-name').value || "이름 미입력";
-  document.getElementById('card-verse').textContent = document.getElementById('user-verse').value || "";
+  document.getElementById('card-name').textContent = document.getElementById('user-name').value || "이름을 입력해주세요.";
+  document.getElementById('card-verse').textContent = document.getElementById('user-verse').value || "나를 표현하는 문장을 입력해주세요.";
+
+  document.querySelector('.preview-section').style.display = 'block'; 
 
   // 9개 질문 이미지 및 텍스트 반영
   const imgInputs = document.querySelectorAll('.q-img');
