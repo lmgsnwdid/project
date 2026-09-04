@@ -122,8 +122,8 @@ document.getElementById('export-btn').addEventListener('click', async () => {
     const clone = original.cloneNode(true);
 
     // 캡처용 고정 크기 설정
-    clone.style.width = '1080px';
-    clone.style.height = '1080px';
+    clone.style.width = '850px';
+    clone.style.height = '655px';
     clone.style.position = 'absolute';
     clone.style.left = '-99999px';
     clone.style.top = '0';
@@ -133,9 +133,9 @@ document.getElementById('export-btn').addEventListener('click', async () => {
 
     try {
         const canvas = await html2canvas(clone, {
-            width: 1080,
-            height: 1080,
-            scale: 1,
+            width: 850,
+            height: 655,
+            scale: 2,
             useCORS: true,
             backgroundColor: '#ffffff'
         });
