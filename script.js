@@ -1,14 +1,13 @@
-// 9가지 질문 목록 정의 (원하는 질문으로 수정 가능)
 const questions = [
-  "1. 파시 방학을 보내며 가장 기억에 남는 순간",
-  "2. 요즘 나의 신앙의 온도는?",
+  "1. 파시 방학 중 가장 기억에 남는 순간",
+  "2. 요즘 신앙의 온도",
   "3. 최근에 빠진 것",
-  "4. 나에게 가장 힘이 되었던 말씀 구절",
+  "4. 가장 힘이 되었던 말씀 구절",
   "5. 하반기 나의 가장 큰 목표",
   "6. 자랑하고 싶은 것",
   "7. 파스 영상 중 최애 영상",
   "8. 나의 삶에 큰 영향을 준 사람",
-  "9. 파워스테이션 사역 중 가장 기억에 남는 시간"
+  "9. 파워스테이션 상반기 사역 중 가장 기억에 남는 사역"
 ];
 
 const questionsContainer = document.getElementById('questions-container');
@@ -68,8 +67,6 @@ function changeImage(index){
       const avatar = document.getElementById('grid-item' + index);
       avatar.style.backgroundImage = `url(${event.target.result})`;
       avatar.style.display = 'block';
-      avatar.style.backgroundSize = 'cover';
-      avatar.style.height = '150px';
       avatar.textContent = '';
     };
     reader.readAsDataURL(file);
@@ -114,7 +111,7 @@ document.getElementById('generate-btn').addEventListener('click', () => {
   });
 
 
-  alert("프로필 카드가 업데이트되었습니다. 아래로 내려 확인하세요!");
+  alert("이미지가 업데이트되었습니다. 아래로 내려 확인하세요!");
 });
 
 // 4. 이미지로 내보내기 (html2canvas 사용)

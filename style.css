@@ -160,6 +160,12 @@ button:hover {
   overflow: hidden;
   border: 1px solid var(--border);
   text-align: center;
+  height: 150px;
+  background-size: cover;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .grid-item img {
