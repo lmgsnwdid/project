@@ -84,11 +84,18 @@ document.getElementById('photoInput').addEventListener('change', function(e) {
   }
 });
 
+document.getElementById('user-name').addEventListener('change', function(e) {
+  document.getElementById('card-name').textContent = document.getElementById('user-name').value || "이름";
+
+});
+
+document.getElementById('user-verse').addEventListener('change', function(e) {
+  document.getElementById('card-verse').textContent = document.getElementById('user-verse').value || "나를 표현하는 문장";
+
+});
+
 // 3. '프로필 카드 만들기' 버튼 클릭 시 데이터 동기화
 document.getElementById('generate-btn').addEventListener('click', () => {
-  // 이름 및 성경구절 반영
-  document.getElementById('card-name').textContent = document.getElementById('user-name').value || "이름을 입력해주세요.";
-  document.getElementById('card-verse').textContent = document.getElementById('user-verse').value || "나를 표현하는 문장을 입력해주세요.";
 
   document.querySelector('.preview-section').style.display = 'block'; 
 
@@ -123,7 +130,7 @@ document.getElementById('export-btn').addEventListener('click', async () => {
 
     // 캡처용 고정 크기 설정
     clone.style.width = '850px';
-    clone.style.height = '655px';
+    clone.style.height = '1007px';
     clone.style.position = 'absolute';
     clone.style.left = '-99999px';
     clone.style.top = '0';
@@ -134,7 +141,7 @@ document.getElementById('export-btn').addEventListener('click', async () => {
     try {
         const canvas = await html2canvas(clone, {
             width: 850,
-            height: 655,
+            height: 1007,
             scale: 2,
             useCORS: true,
             backgroundColor: '#ffffff'
