@@ -66,7 +66,6 @@ function changeImage(index){
     reader.onload = function(event) {
       const avatar = document.getElementById('grid-item' + index);
       avatar.style.backgroundImage = `url(${event.target.result})`;
-      avatar.style.display = 'block';
       avatar.textContent = '';
     };
     reader.readAsDataURL(file);
