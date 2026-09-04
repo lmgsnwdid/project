@@ -114,13 +114,39 @@ document.getElementById('generate-btn').addEventListener('click', () => {
 });
 
 // 4. 이미지로 내보내기 (html2canvas 사용)
-document.getElementById('export-btn').addEventListener('click', () => {
-  const cardArea = document.getElementById('profile-card');
-  
-  html2canvas(cardArea).then(canvas => {
-    const link = document.createElement('a');
-    link.download = 'church_profile.png';
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-  });
+document.getElementById('export-btn').addEventListener('click', async () => {
+
+    const original = document.getElementById('profile-card');
+
+    // 카드 복제
+    const clone = original.cloneNode(true);
+
+    // 캡처용 고정 크기 설정
+    clone.style.width = '1080px';
+    clone.style.height = '1080px';
+    clone.style.position = 'absolute';
+    clone.style.left = '-99999px';
+    clone.style.top = '0';
+    clone.style.margin = '0';
+
+    document.body.appendChild(clone);
+
+    try {
+        const canvas = await html2canvas(clone, {
+            width: 1080,
+            height: 1080,
+            scale: 1,
+            useCORS: true,
+            backgroundColor: '#ffffff'
+        });
+
+        const link = document.createElement('a');
+        link.download = 'church_profile.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+
+    } finally {
+        // 캡처 후 복제본 삭제
+        clone.remove();
+    }
 });
