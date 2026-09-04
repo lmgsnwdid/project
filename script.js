@@ -141,7 +141,7 @@ document.getElementById('export-btn').addEventListener('click', async () => {
         });
 
         const link = document.createElement('a');
-        link.download = 'church_profile.png';
+        link.download = 'pwsw.png';
         link.href = canvas.toDataURL('image/png');
         link.click();
 
